@@ -75,17 +75,25 @@ varargout{1} = handles.output;
 
 
 % --- Executes on button press in x.
-function x_Callback_spec(hObject, eventdata, handles)
-disp(handles.fech)
-Estimation_puissance(handles.fech,handles.fmin,handles.fmax,1);
+function x_Callback_per(hObject, eventdata, handles)
+
+fech=str2num(handles.fech.String);
+fmin=str2num(handles.fmin.String);
+fmax=str2num(handles.fmax.String);
+padding=handles.padding.Value;
+
+Estimation_Puissance(fech,fmin,fmax,1,padding);
    
 % hObject    handle to x (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-function x_Callback_per(hObject, eventdata, handles)
-fech=str2string(handles.
-Estimation_puissance(fech,fmin,fmax,0);
+function x_Callback_spec(hObject, eventdata, handles)
+fech=str2num(handles.fech.String);
+fmin=str2num(handles.fmin.String);
+fmax=str2num(handles.fmax.String);
+padding=handles.padding.Value;
+Estimation_Puissance(fech,fmin,fmax,0,padding);
    
 % hObject    handle to x (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB

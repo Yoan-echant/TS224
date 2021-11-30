@@ -1,8 +1,10 @@
-function Estimation_puissance(fech,fmin,fmax,x)
-disp(fech)
+function Estimation_Puissance(fech,fmin,fmax,x,padding)
+
+
 fech=round(fech);
 fmin=round(fmin);
 fmax=round(fmax);
+
 x=round(x);
 n=100;
 sigma=1;
@@ -14,20 +16,25 @@ sftest=conv2(s,fen);
 %prompt= 'tapez 0 pour un spectre de puissance, 1 pour un periodigramme: ';
 %x=input(prompt);
 %%Spectre de puissance
+disp('hey')
+disp(padding)
 if x ==1
     %%Zero-padding
-    nsf=length(sftest);
-    i=nsf;
-    c=1;
-    while (i/2>1)
-        i=i/2;
-        c=c+1;
+    if (padding==1)
+        nsf=length(sftest);
+        i=nsf;
+        c=1;
+        while (i/2>1)
+            i=i/2;
+            c=c+1;
+        end
+        l=0;
+        while ((nsf+l)/(2^c)~=1)
+            l=l+1;
+        end
+    else
+    l=0;    
     end
-    l=0;
-    while ((nsf+l)/(2^c)~=1)
-        l=l+1;
-    end
-    
     DSPm=0;
 
     for i=0:nbit
@@ -53,27 +60,30 @@ if x ==1
     for i=1:nd-1
         A=A+(DSPm(i)+DSPm(i+1))*(1/fech)/2;
     end
-    str=sprintf("La puissance estimé par la méthode des rectangle est %d W",A);
-    disp(str)
-    
-    
+    disp(["La puissance estimé par la méthode des rectangle est" A "W"]);
+
+
+%{
 elseif x==2
     %%Specte de puissance:
     Nfft=floor(n/10);
     dec=floor(n/20);
     
     sftest=ones(Nfft);
+    
     %%Zero-padding
-    nsf=length(sftest);
-    i=nsf;
-    c=1;
-    while (i/2>1)
-        i=i/2;
-        c=c+1;
-    end
-    l=0;
-    while ((nsf+l)/(2^c)~=1)
-        l=l+1;
+    if (padding==1)
+        nsf=length(sftest);
+        i=nsf;
+        c=1;
+        while (i/2>1)
+            i=i/2;
+            c=c+1;
+        end
+        l=0;
+        while ((nsf+l)/(2^c)~=1)
+            l=l+1;
+        end
     end
     
     DSPm=0;
@@ -98,7 +108,7 @@ elseif x==2
     title('Estimation de la puissance');
     xlabel('Fréquence (Hz)')
     ylabel('Puissance')
-    
+%} 
 elseif x==0
     figure,
     spectrogram(sigma*randn(1,n))
