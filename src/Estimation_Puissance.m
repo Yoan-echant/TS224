@@ -16,9 +16,9 @@ f0=3*fech/2;
 Nfft=floor(n/10); %%Largeur de la fenêtre
 dec=floor(n/20);  %%décalage entre le début de deux fenêtre
     
-sftest=ones(Nfft);
+%sftest=ones(Nfft);
     
-%%Zero-padding
+%%Détermination du nombre de zero pour le zero-padding
 if (padding==1)
     nsf=length(sftest);
     i=nsf;
@@ -34,45 +34,56 @@ end
 
 DSPm=0;
 
+%%Boucle de N itération pour approcher la DSP
+
 for j=1:N
     i=0;
+    %%Génération de l'itération
+    
     %fct=sigma*randn(1,n);
-    fct=cos(f0/fech*ones(1,n));    
+    fct=cos(f0/fech*ones(1,n));
+    
+    %%Boucle de fenêtrage
     while i*dec+Nfft < n
         selec=zeros(1,n);
         selec(i*dec+1:i*dec+Nfft)=ones(1,Nfft);
 
         s=fct.*selec;
-        %sf=[s zeros(1,l)];
+        %%Convolution par la fenêtre+ zero padding
         sf=[conv2(s,fen) zeros(1,l)];
-
+        
+        %%fft
         tf=fftshift(fft(sf));
-
-        DSP=abs(tf).^2;
-        DSPm=DSPm+DSP;
+        
+        %Calcul DSE
+        DSE=abs(tf).^2;
+        DSPm=DSPm+DSE;
         i=i+1;
     end
 end
-DSPm=DSPm/(i*N);
+
+%%Moyennage des DSE
+
+DSP=DSPm/(i*N);
 
 %figure,
 
 if (x==1)
-    absi=linspace(fmin,fmax,length(DSPm));
-    %plot(absi,DSPm)
+    absi=linspace(fmin,fmax,length(DSP));
+    plot(absi,DSP)
     title('Periodogramme par la méthode de Welch');
     xlabel('Fréquence (Hz)')
     ylabel('Puissance')
     %%Calcul de la puissance par la méthode des trapèze.
-    nd=length(DSPm);
+    nd=length(DSP);
     A=0;
     for i=1:nd-1
-        A=A+(DSPm(i)+DSPm(i+1))*(1/fech)/2;
+        A=A+(DSP(i)+DSP(i+1))*(1/fech)/2;
     end
     A=round(A);
     %disp(["La puissance estimé par la méthode des trapèze est" A "W"]);
 elseif x==0
-    %imagesc(-f0,1,log(DSPm))
+    imagesc(-f0,1,log(DSPm))
     title('Spectrogramme');
     xlabel('Fréquence (Hz)')
     ylabel('Puissance')

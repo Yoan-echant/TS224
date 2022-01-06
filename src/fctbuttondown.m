@@ -22,7 +22,7 @@ function varargout = fctbuttondown(varargin)
 
 % Edit the above text to modify the response to help Interface
 
-% Last Modified by GUIDE v2.5 30-Nov-2021 14:39:00
+% Last Modified by GUIDE v2.5 06-Jan-2022 10:20:44
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -77,9 +77,9 @@ varargout{1} = handles.output;
 % --- Executes on button press in x.
 function x_Callback_per(hObject, eventdata, handles)
 
-fech=str2num(handles.fech.String);
-fmin=str2num(handles.fmin.String);
-fmax=str2num(handles.fmax.String);
+fech=handles.fech.Value;
+fmin=handles.fmin.Value;
+fmax=handles.fmax.Value;
 padding=handles.padding.Value;
 
 Estimation_Puissance(fech,fmin,fmax,1,padding);
@@ -89,12 +89,24 @@ Estimation_Puissance(fech,fmin,fmax,1,padding);
 % handles    structure with handles and user data (see GUIDATA)
 
 function x_Callback_spec(hObject, eventdata, handles)
-fech=str2num(handles.fech.String);
-fmin=str2num(handles.fmin.String);
-fmax=str2num(handles.fmax.String);
+fech=handles.fech.Value;
+fmin=handles.fmin.Value;
+fmax=handles.fmax.Value;
 padding=handles.padding.Value;
 Estimation_Puissance(fech,fmin,fmax,0,padding);
    
 % hObject    handle to x (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in pushbutton3.
+function pushbutton3_Callback(hObject, eventdata, handles)
+fech=handles.fech.Value;
+fmin=handles.fmin.Value;
+fmax=handles.fmax.Value;
+padding=handles.padding.Value;
+Capon(fech,fmin,fmax,padding);
+% hObject    handle to pushbutton3 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
